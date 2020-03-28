@@ -40,7 +40,8 @@ int minstepsMemo(int n,int *answer)
         }
         else
         {
-        a=minsteps(n/3);
+           answer[n/3]=minsteps(n/3);
+           a=answer[n/3];
         }
     }
     if(n%2==0)
@@ -51,7 +52,8 @@ int minstepsMemo(int n,int *answer)
         }
         else
         {
-        b=minsteps(n/2);
+        answer[n/2]=minsteps(n/2);
+        b=answer[n/2];
         }
     }
     if(answer[n-1]!=-1)
@@ -60,7 +62,8 @@ int minstepsMemo(int n,int *answer)
     }
     else
     {
-    c=minsteps(n-1);
+    answer[n-1]=minsteps(n-1);
+    c=answer[n-1];
     }
     answer[n]=min(a,min(b,c))+1;
     return answer[n];
