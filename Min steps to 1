@@ -29,6 +29,14 @@ int minstepsMemo(int n,int *answer)
         answer[n]=0;
         return answer[n];
     }
+    //Or instead of checking at n-1,n/2 and n/3.
+    /*
+    if(a[n]!=-1)
+    {
+        return a[n];
+    }
+    Now need not write if condition in all 3.
+    */
     int a=INT_MAX;
     int b=INT_MAX;
     int c;
