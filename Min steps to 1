@@ -48,6 +48,7 @@ int minstepsMemo(int n,int *answer)
         }
         else
         {
+        //Need not store recursion ka answer as recursion will do the same thing as we are doing it will save for n so our choice can save or not save.
            answer[n/3]=minsteps(n/3);
            a=answer[n/3];
         }
