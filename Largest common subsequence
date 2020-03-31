@@ -1,0 +1,118 @@
+#include <iostream>
+#include<bits/stdc++.h>
+using namespace std;
+int lcs(string s,string t)
+{
+    //Base case
+    if(s.length()==0||t.length()==0)
+    {
+        return 0;
+    }
+    //Recursive calls
+    if(s[0]==t[0])
+    {
+       return 1+lcs(s.substr(1),t.substr(1)); 
+    }
+    int a=lcs(s.substr(1),t);
+    int b=lcs(s.substr(1),t.substr(1));
+    int c=lcs(s,t.substr(1));
+    return max(a,max(b,c));
+}
+int lcsMemo(string s,string t,int **answer)
+{
+    int m=s.length();
+    int n=t.length();
+    //Base case
+    if(s.length()==0||t.length()==0)
+    {
+        return 0;
+    }
+    //Check if answer already exists
+     if(answer[m][n]!=-1)
+    {
+        return answer[m][n];
+    }
+    int ans;
+    //Recursive calls
+    if(s[0]==t[0])
+    {
+       ans=1+lcsMemo(s.substr(1),t.substr(1),answer); 
+    }
+    else
+    {
+    int a=lcs(s.substr(1),t);
+    int b=lcs(s.substr(1),t.substr(1));
+    int c=lcs(s,t.substr(1));
+     ans=max(a,max(b,c));
+    }
+     answer[m][n]=ans;
+     return answer[m][n];
+}
+int lcsMemoHelp(string s,string t)
+{
+    //M+1*N+1 length array as that much unique recursive calls because length zero is also a valid string ans need to store it
+    int m=s.length();
+    int n=t.length();
+    int **answer=new int*[m+1];
+    for(int i=0;i<=m;i++)
+    {
+        answer[i]=new int[n+1];
+    }
+    for(int i=0;i<=m;i++)
+    {
+        for(int j=0;j<=n;j++)
+        {
+            answer[i][j]=-1;
+        }
+    }
+    return lcsMemo(s,t,answer);
+}
+int lcsDp(string s,string t)
+{
+    int m=s.length();
+    int n=t.length();
+    int **answer=new int*[n+1];
+    for(int i=0;i<=n;i++)
+    {
+        answer[i]=new int[m+1];
+    }
+    //answer[i][j] represents length of longest common subsequence till i length on x axis and j length on y axis so answer is on answer[m-1][n-1]
+    answer[0][0]=0;
+    int i=0;
+    for(int j=0;j<=n;j++)
+    {
+        answer[i][j]=0;
+    }
+    int j=0;
+    for(int i=0;i<=m;i++)
+    {
+        answer[i][j]=0;
+    }
+    for(int i=1;i<=m;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            int k=max(answer[i-1][j-1],max(answer[i-1][j],answer[i][j-1]));
+            //as rows taken as s ka length and column as t ka length
+            if(s[m-i]==t[n-j])
+            {
+                //As dono le lete the and aage call
+                answer[i][j]=1+answer[i-1][j-1];
+            }
+            else
+            {
+                answer[i][j]=k;
+            }
+        }
+    }
+    return answer[m][n];
+
+}
+int main() 
+{
+    string s,t;
+    cin>>s>>t;
+    cout<<lcs(s,t)<<endl;
+    cout<<lcsDp(s,t)<<endl;
+    cout<<lcsMemoHelp(s,t);
+}
