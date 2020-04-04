@@ -22,6 +22,39 @@ using namespace std;
     b=lis(arr+1,n-1);
      return max(a,b);
  }
+ //Coding ninjas method
+int answer2(int *arr,int n)
+{
+     int *answer=new int[n];
+    //answer[i]=length of subsequence ending at index i.
+    answer[0]=1;
+    for(int i=1;i<n;i++)
+    {
+        int max=1;
+        for(int j=i-1;j>=0;j--)
+        {
+            if(arr[j]<arr[i])
+            {
+                if(max<=answer[j])
+                //Making it max<= to v imp as answer mei 1 add karna hai toh that will become greater then max.
+                {
+                    max=answer[j]+1;
+                }
+            }
+        }
+        answer[i]=max;
+    }
+    int best=0;
+     for(int i=0;i<n;i++)
+     {
+         if(best<answer[i])
+         {
+             best=answer[i];
+		 }
+	}
+     return best;
+     
+}
 int main() {
     int n;
     cin>>n;
@@ -30,5 +63,6 @@ int main() {
     {
         cin>>arr[i];
     }
-    cout<<lis(arr,n);
+    cout<<lis(arr,n)<<endl;
+    cout<<answer2(arr,n);
 }
