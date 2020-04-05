@@ -1,0 +1,86 @@
+#include <iostream>
+#include<bits/stdc++.h>
+using namespace std;
+int findMaxSquareWithAllZeros(int** arr, int row, int col)
+{
+    int maxi=INT_MIN;
+    int **dp=new int*[row];
+     for(int i=0;i<col;i++)
+    {
+        dp[i]=new int[col];
+    }
+    int i=0;
+    for(int j=0;j<col;j++)
+    {
+        if(arr[i][j]==0)
+        {
+        dp[i][j]=1;
+             if(dp[i][j]>maxi)
+                {
+                    maxi=dp[i][j];
+                }
+        }
+        else
+        {
+            dp[i][j]=0;
+             if(dp[i][j]>maxi)
+                {
+                    maxi=dp[i][j];
+                }
+        }
+    }
+    int j=0;
+    for(int i=0;i<row;i++)
+    {
+        if(arr[i][j]==0)
+        {
+        dp[i][j]=1;
+             if(dp[i][j]>maxi)
+                {
+                    maxi=dp[i][j];
+                }
+        }
+        else
+        {
+            dp[i][j]=0;
+             if(dp[i][j]>maxi)
+                {
+                    maxi=dp[i][j];
+                }
+        }
+    }
+    for(int i=1;i<row;i++)
+    {
+        for(int j=1;j<col;j++)
+        {
+            if(arr[i][j]==1)
+            {
+                dp[i][j]=0;
+                 if(dp[i][j]>maxi)
+                {
+                    maxi=dp[i][j];
+                }
+            }
+            else
+            {
+                dp[i][j]=1+min(dp[i-1][j-1],min(dp[i-1][j],dp[i][j-1]));
+                if(dp[i][j]>maxi)
+                {
+                    maxi=dp[i][j];
+                }
+            }
+        }
+    }
+    return maxi;
+}
+int main() 
+{
+    int row,col;
+    cin>>row>>col;
+    int **arr=new int*[row];
+    for(int i=0;i<col;i++)
+    {
+        arr[i]=new int[col];
+    }
+    cout<<findMaxSquareWithAllZeros(arr,row,col);
+}
