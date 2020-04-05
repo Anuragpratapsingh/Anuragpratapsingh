@@ -1,68 +1,86 @@
 #include <iostream>
 #include<bits/stdc++.h>
 using namespace std;
-
-int solve(string s,string v,int **answer)
+int findMaxSquareWithAllZeros(int** arr, int row, int col)
 {
-	// Write your code here.
-     //Base case
-     //Base case
-    if(s.length()==0)
+    int maxi=INT_MIN;
+    int **dp=new int*[row];
+     for(int i=0;i<col;i++)
     {
-        //S length zero so ab s only has 1 subsequence which is empty so that is present in v as well so no subsequence exist as such
-        return 1000;
+        dp[i]=new int[col];
     }
-    if(v.length()==0)
+    int i=0;
+    for(int j=0;j<col;j++)
     {
-        //Koi bhi character uthalo doosre ka i.e s ka as v toh empty hai and we need min length.
-        return 1;
-    }
-    if(answer[s.length()-1][v.length()-1]!=-1)
-    {
-        return answer[s.length()-1][v.length()-1];
-    }
-    //Recursive case
-    //Not taking the first element in s
-    int a=solve(s.substr(1),v,answer);
-    //Taking the first element in s
-    int index=-1;
-    for(int i=0;i<v.length();i++)
-    {
-        if(v[i]==s[0])
+        if(arr[i][j]==0)
         {
-            index=i;
-            break;
+        dp[i][j]=1;
+        if(dp[i][j]>maxi)
+        {
+            maxi=dp[i][j];
+        }
+        }
+        else
+        {
+        dp[i][j]=0;
+        if(dp[i][j]>maxi)
+        {
+            maxi=dp[i][j];
+        }
         }
     }
-    int b;
-    if(index==-1)
+    int j=0;
+    for(int i=0;i<row;i++)
     {
-        //as ab first character is not in v so that only is the smallest subsequence 
-        return 1;
-    }
-    else
-    {
-        //First char included so 1+
-     b=1+solve(s.substr(1),v.substr(index+1),answer);
-    }
-    answer[s.length()-1][v.length()-1]=min(a,b);
-    return answer[s.length()-1][v.length()-1];
-}
-int solveHelp(string s,string v)
-{
-    int **answer=new int*[s.length()];
-    for(int i=0;i<s.length();i++)
-    {
-        answer[i]=new int[v.length()];
-        for(int j=0;j<v.length();j++)
+        if(arr[i][j]==0)
         {
-            answer[i][j]=-1;
+        dp[i][j]=1;
+        if(dp[i][j]>maxi)
+        {
+             maxi=dp[i][j];
+        }
+        }
+        else
+        {
+            dp[i][j]=0;
+        if(dp[i][j]>maxi)
+        {
+             maxi=dp[i][j];
+        }
         }
     }
-    return solve(s,v,answer);
+    for(int i=1;i<row;i++)
+    {
+        for(int j=1;j<col;j++)
+        {
+            if(arr[i][j]==1)
+            {
+                dp[i][j]=0;
+                if(dp[i][j]>maxi)
+                {
+                    maxi=dp[i][j];
+                }
+            }
+            else
+            {
+                dp[i][j]=1+min(dp[i-1][j-1],min(dp[i-1][j],dp[i][j-1]));
+                if(dp[i][j]>maxi)
+                {
+                    maxi=dp[i][j];
+                }
+            }
+        }
+    }
+    return maxi;
 }
-int main() {
-    string s,v;
-    cin>>s>>v;
-    cout<<solveHelp(s,v);
+int main() 
+{
+    int row,col;
+    cin>>row>>col;
+    int **arr=new int*[row];
+    for(int i=0;i<col;i++)
+    {
+        arr[i]=new int[col];
+    }
+    cout<<findMaxSquareWithAllZeros(arr,row,col);
 }
