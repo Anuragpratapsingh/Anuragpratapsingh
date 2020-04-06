@@ -8,7 +8,7 @@ int countWaysToMakeChange(int denominations[], int n, int value)
    {
        dp[i]=new int[value+1];
    }
-   //For the 0th column just 1 way don't take anything.
+   //For the 0th column just 1 way kuch bhi nahi lo.
    int j=0;
    for(int i=0;i<n;i++)
    {
@@ -22,9 +22,11 @@ int countWaysToMakeChange(int denominations[], int n, int value)
        if(j%denominations[0]==0)
        {
            dp[i][j]=1;
+           //If uss coin se hai divisible so saare coins le lo to make the change so just 1 way.
 	   }
        else
        {
+           //Canot make that sum using that coin.
            dp[i][j]=0;
 		}  
    }
@@ -34,6 +36,7 @@ int countWaysToMakeChange(int denominations[], int n, int value)
        {
            if(j<denominations[i])
            {
+               //So cannot take denominations[i] wala coin so jo i-1 coins tak answer hai vohi hoga answer.
                dp[i][j]=dp[i-1][j];
            }
            else
@@ -44,7 +47,6 @@ int countWaysToMakeChange(int denominations[], int n, int value)
        }
    }
    return dp[n-1][value];
-
 }
 int main() 
 {
