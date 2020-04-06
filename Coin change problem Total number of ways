@@ -1,0 +1,60 @@
+#include <iostream>
+using namespace std;
+#include<bits/stdc++.h>
+int countWaysToMakeChange(int denominations[], int n, int value)
+{
+  int **dp=new int*[n];
+   for(int i=0;i<n;i++)
+   {
+       dp[i]=new int[value+1];
+   }
+   //For the 0th column just 1 way don't take anything.
+   int j=0;
+   for(int i=0;i<n;i++)
+   {
+       dp[i][j]=1;
+   }
+   //dp[i][j]=Total number of ways to make j using 0 to i coins(0 to i are indexes in denominations array).
+   int i=0;
+   //i=0 so we have only one coin i.e denominations[0]
+   for(int j=1;j<=value;j++)
+   {
+       if(j%denominations[0]==0)
+       {
+           dp[i][j]=1;
+	   }
+       else
+       {
+           dp[i][j]=0;
+		}  
+   }
+   for(int i=1;i<n;i++)
+   {
+       for(int j=1;j<=value;j++)
+       {
+           if(j<denominations[i])
+           {
+               dp[i][j]=dp[i-1][j];
+           }
+           else
+           {
+           //Include the element and exclude the element
+           dp[i][j]=dp[i-1][j]+dp[i][j-denominations[i]];
+           }
+       }
+   }
+   return dp[n-1][value];
+
+}
+int main() 
+{
+    int n,value;
+    cin>>n;
+    int *denominations=new int [n];
+    for(int i=0;i<n;i++)
+    {
+        cin>>denominations[i];
+    }
+    cin>>value;
+    cout<<countWaysToMakeChange(denominations,n,value);
+}
