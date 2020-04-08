@@ -3,6 +3,7 @@
 using namespace std;
 int findMaxSquareWithAllZeros(int** arr, int row, int col)
 {
+//Maxi as at last have to return the maxinmum of all the numbers in dp[i][j]
     int maxi=INT_MIN;
     int **dp=new int*[row];
      for(int i=0;i<col;i++)
